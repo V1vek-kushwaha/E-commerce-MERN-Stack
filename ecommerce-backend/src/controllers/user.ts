@@ -8,19 +8,23 @@ export const newUser = async (
   next: NextFunction
 ) => {
   try {
-    const { name, email, photo, gender, role, _id, dob } = req.body;
+    const { name, email, photo, gender, _id, dob } = req.body;
     const user = User.create({
       name,
       email,
       photo,
       gender,
-      role,
       _id,
-      dob,
+      dob: new Date(dob),
     });
-    res.status(200).json({
+    return res.status(201).json({
       success: true,
-      message: `Welcome, ${User.name}`,
+      message: `Welcome, ${user}`,
     });
-  } catch (err) {}
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error,
+    });
+  }
 };
